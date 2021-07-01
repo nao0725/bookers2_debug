@@ -1,23 +1,23 @@
 class BooksController < ApplicationController
 
   def show
-    # @book = Book.find(params[:id])
-    @book = Book.new
-    @user = User.find(params[:id])
-    @book.user_id = current_user.id
+    @new_book = Book.new
+    @user = current_user
+    @book = Book.find(params[:id])
   end
 
   def index
     @books = Book.all
-    @book = Book.new
+    @new_book = Book.new
     @user = current_user
   end
 
   def create
-    @book = Book.new(book_params)
-    @book.user_id = current_user.id
-    if @book.save
-      redirect_to book_path(@book), notice: "You have created book successfully."
+    @new_book = Book.new(book_params)
+    @new_book.user_id = current_user.id
+    @user = current_user
+    if @new_book.save
+      redirect_to book_path(@new_book.user), notice: "You have created book successfully."
     else
       @books = Book.all
       render 'index'
